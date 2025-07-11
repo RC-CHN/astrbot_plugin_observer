@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: observer_postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: astrbot_logger
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  minio:
+    # 锁定到一个已知的、包含 UI 的稳定版本
+    image: minio/minio:latest
+    container_name: observer_minio
+    environment:
+      # 这些凭证将直接用作 Access Key 和 Secret Key
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"  # API Port
+      - "9001:9001"  # Console Port
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+
+volumes:
+  pg_data:
+  minio_data:

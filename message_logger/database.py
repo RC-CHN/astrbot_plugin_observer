@@ -1,7 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Index
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Index, JSON
 from sqlalchemy.orm import sessionmaker, relationship, declarative_base
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.dialects.mysql import JSON as MySQLJSON
 
 Base = declarative_base()
 
@@ -14,24 +12,13 @@ class Message(Base):
     timestamp = Column(Integer, index=True)
     
     # 使用 dialect-specific JSON 类型
-    raw_message_obj = Column(Text)  # Fallback for SQLite
+    raw_message_obj = Column(JSON)
     
     components = relationship("MessageComponent", back_populates="message", cascade="all, delete-orphan")
 
-    __mapper_args__ = {
-        'polymorphic_on': 'raw_message_obj'
-    }
     __table_args__ = (
         Index('idx_messages_timestamp', 'timestamp'),
     )
-
-class MessageWithPGJSON(Message):
-    __mapper_args__ = {'polymorphic_identity': 'postgresql'}
-    raw_message_obj = Column(JSONB)
-
-class MessageWithMySQLJSON(Message):
-    __mapper_args__ = {'polymorphic_identity': 'mysql'}
-    raw_message_obj = Column(MySQLJSON)
 
 
 class MessageComponent(Base):

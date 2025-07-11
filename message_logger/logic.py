@@ -57,16 +57,28 @@ async def _process_file_component(
         logger.error(f"处理文件组件 {component_id} 时发生错误: {e}", exc_info=True)
 
 
+def _serialize_helper(obj):
+    """递归辅助函数，用于序列化对象。"""
+    if isinstance(obj, (int, str, bool, float, type(None))):
+        return obj
+    if isinstance(obj, list):
+        return [_serialize_helper(item) for item in obj]
+    if hasattr(obj, '__dict__'):
+        # 忽略私有属性和方法
+        return {key: _serialize_helper(value) for key, value in obj.__dict__.items() if not key.startswith('_') and not callable(value)}
+    # 对于无法处理的类型，返回其字符串表示形式
+    return str(obj)
+
 def handle_message_event(
-    event: AstrMessageEvent, 
-    session: Session, 
-    minio_client: MinioClient, 
+    event: AstrMessageEvent,
+    session: Session,
+    minio_client: MinioClient,
     bucket_name: str,
     db_engine
 ):
     """处理消息事件，将其存入数据库并触发文件上传任务"""
     try:
-        message_obj_dict = event.message_obj.to_dict()
+        message_obj_dict = _serialize_helper(event.message_obj)
         
         new_message = database.Message(
             message_id=str(message_obj_dict.get("message_id")),
