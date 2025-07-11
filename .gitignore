@@ -1,0 +1,18 @@
+﻿# Byte-compiled / optimized files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# VSCode
+.vscode/
+
+# Project-specific
+/data/
+/example/

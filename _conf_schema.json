@@ -1,0 +1,57 @@
+{
+  "db_type": {
+    "description": "数据库类型 (postgresql 或 mysql)",
+    "type": "string",
+    "default": "postgresql"
+  },
+  "db_host": {
+    "description": "数据库主机地址",
+    "type": "string",
+    "default": "localhost"
+  },
+  "db_port": {
+    "description": "数据库端口",
+    "type": "int",
+    "default": 5432
+  },
+  "db_user": {
+    "description": "数据库用户名",
+    "type": "string",
+    "default": "user"
+  },
+  "db_password": {
+    "description": "数据库密码",
+    "type": "string",
+    "default": "password"
+  },
+  "db_name": {
+    "description": "数据库名称",
+    "type": "string",
+    "default": "astrbot_logger"
+  },
+  "minio_endpoint": {
+    "description": "MinIO 地址 (例如 'localhost:9000')",
+    "type": "string",
+    "default": "localhost:9000"
+  },
+  "minio_access_key": {
+    "description": "MinIO Access Key",
+    "type": "string",
+    "default": "minioadmin"
+  },
+  "minio_secret_key": {
+    "description": "MinIO Secret Key",
+    "type": "string",
+    "default": "minioadmin"
+  },
+  "minio_bucket_name": {
+    "description": "MinIO 存储桶名称",
+    "type": "string",
+    "default": "astrbot-images"
+  },
+  "minio_secure": {
+    "description": "是否对 MinIO 使用 HTTPS",
+    "type": "bool",
+    "default": false
+  }
+}

@@ -1,0 +1,6 @@
+sqlalchemy
+minio
+psycopg2-binary
+aiohttp
+mysqlclient
+pydantic
